@@ -1,0 +1,114 @@
+/* --- RegisterUserModal.css --- */
+
+/* VISUAL ROOT: This is the container that breaks the normal page flow to create the "Pop-up" effect. */
+.modal-overlay {
+  /* Why: 'Fixed' ensures the modal stays on screen even if the user scrolls the background page. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Why: Semi-transparent black dims the background content, visually forcing the user to focus only on the modal task. */
+  background-color: rgba(0, 0, 0, 0.5); 
+  
+  /* Why: Flexbox is the most reliable way to perfectly center a dynamic box horizontally and vertically on all screen sizes. */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Why: A high Z-Index guarantees this layer sits on top of everything else (Navbar, sidebars, other buttons). */
+  z-index: 1000; 
+  
+  /* Why: Modern UI trend. Blurring the background adds depth and reduces cognitive load by making the text behind unreadable. */
+  backdrop-filter: blur(3px); 
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  
+  /* Why: On large desktop screens, we don't want the form to stretch 2000px wide. We cap it at 400px for readability. */
+  max-width: 400px;
+  
+  /* Why: A strong shadow lifts the card off the page (elevation), reinforcing the metaphor that it is "floating" above the content. */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  position: relative;
+  
+  /* Why: Micro-interaction. A subtle entry animation makes the UI feel more polished and less abrupt than simply appearing instantly. */
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.form-input {
+  /* Why: The input takes the full width of its parent (.form-group), making the layout responsive and easier to tap on mobile. */
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 1rem;
+}
+
+.modal-actions {
+  /* Why: We push buttons to the right to follow the standard "reading direction" for concluding actions (Next/Save). */
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #666;
+  /* Why: The "Cancel" button is visually neutral/weak so it doesn't compete for attention with the primary action. */
+}
+
+.btn-submit {
+  /* VISUAL CUE: Green is universally understood as "Go", "Success", or "Save". It draws the eye immediately. */
+  background-color: #28a745;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  /* Why: Starts slightly lower (-10px) and transparent, creating a "slide up and fade in" effect. */
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

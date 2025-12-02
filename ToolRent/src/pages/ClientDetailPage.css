@@ -1,0 +1,227 @@
+/* --- GENERAL CONFIGURATION --- */
+.details-container {
+  /* Why: We constrain the width to 1200px to prevent the dashboard from looking "stretched" 
+     on ultra-wide monitors, ensuring the eye doesn't have to travel too far left-to-right to read data. */
+  max-width: 1200px;
+  margin: 40px auto; 
+  padding: 0 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Page Header (Title & Back Button) */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.page-title {
+  font-size: 2rem;
+  color: #333;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btn-back {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-back:hover { border-color: #999; color: #333; }
+
+/* Main Grid Layout */
+.main-grid {
+  display: grid;
+  /* VISUAL STRUCTURE: Asymmetric layout. 
+     - 350px: Fixed width for the User Profile Card (left).
+     - minmax(auto, 850px): The History Table (right) fills the rest but won't shrink below content needs. */
+  grid-template-columns: 350px minmax(auto, 850px); 
+  gap: 40px; 
+  /* Why: 'Stretch' forces both cards (Profile and History) to be the exact same height visually, 
+     creating a clean, professional dashboard look even if one has less content than the other. */
+  align-items: stretch; 
+  justify-content: center; 
+}
+
+/* White Cards Styling */
+.detail-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  /* Why: Soft shadows create "elevation" (Depth), separating the content from the gray background. */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  border: 1px solid #f0f0f0;
+  
+  /* Why: We use Flexbox Column here specifically to handle the Footer Buttons later. */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #444;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f5f5f5;
+}
+
+
+/* === HISTORY TABLE STYLES === */
+
+.table-container {
+  width: 100%; 
+  margin-top: 25px; 
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  
+  background: white;
+  border: 1px solid #f0f0f0; 
+  border-radius: 12px;       
+  /* Why: This acts as a mask. The square corners of the internal <table> would stick out 
+     of the rounded corners of this container. This clips them off. */
+  overflow: hidden;          
+}
+
+.rental-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto; 
+}
+
+/* Table Header */
+.rental-table thead th {
+  text-align: left;
+  font-size: 0.8rem;
+  /* Why: Uppercase + Lighter Color is a standard UI pattern for metadata labels, distinguishing them from the actual data. */
+  text-transform: uppercase;
+  color: #888;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 20px 25px; 
+  background-color: #f9fafb; 
+  border-bottom: 1px solid #eee;
+}
+
+/* Table Body */
+.rental-table tbody td {
+  padding: 25px 25px; 
+  border-bottom: 1px solid #f5f5f5;
+  color: #444;
+  font-size: 1rem;
+  vertical-align: middle;
+  
+  /* LAYOUT SAFETY: Prevents long text (like email addresses) from breaking the table width.
+     It forces text into one line and adds "..." if it's too long. */
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; 
+}
+
+/* Interactive Row */
+.rental-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background-color: white;
+}
+
+/* Why: Provides affordance. The color change signals "I am clickable" without needing a button icon. */
+.rental-row:hover {
+  background-color: #f0f7ff; 
+}
+
+/* Remove border from the last row to avoid double lines at the bottom */
+.rental-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Empty State Styling */
+.empty-state-row {
+  height: 200px;
+  text-align: center;
+  color: #aaa;
+  font-style: italic;
+  background-color: white;
+}
+
+/* --- PERSONAL DATA LIST (Vertical Layout) --- */
+.data-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 30px;
+}
+
+.data-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  border-bottom: 1px dashed #f0f0f0;
+  padding-bottom: 15px;
+}
+
+.data-item:last-child { border-bottom: none; }
+
+.label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #999;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+
+.value {
+  font-size: 1.1rem;
+  color: #222;
+  font-weight: 500;
+}
+
+.text-danger { color: #d32f2f; font-weight: 700; }
+.text-success { color: #2e7d32; font-weight: 700; }
+
+/* --- ACTION BUTTONS (Footer) --- */
+.action-buttons {
+  /* Why: Because the parent card uses Flex Column, 'margin-top: auto' acts like gravity.
+     It pushes this block to the absolute bottom of the card, ensuring alignment. */
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.btn-block {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: transform 0.1s;
+}
+.btn-block:active { transform: scale(0.98); }
+
+.btn-yellow { background-color: #fdd835; color: #333; }
+.btn-yellow:hover { background-color: #fbc02d; }
+
+.btn-blue { background-color: #007bff; color: white; }
+.btn-blue:hover { background-color: #0069d9; }
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .main-grid { 
+    /* Why: On tablets/mobile, there isn't enough width for the side-by-side layout.
+       We switch to a single column stack (Profile on top, History below). */
+    grid-template-columns: 1fr; 
+    gap: 30px;
+  }
+}

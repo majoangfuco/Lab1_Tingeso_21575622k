@@ -1,0 +1,193 @@
+/* --- LAYOUT STRUCTURE --- */
+.inventory-container {
+  padding: 30px;
+  /* Why: Limits the content width on large monitors to ensure lines of text/tables 
+     remain readable and don't stretch indefinitely across the screen. */
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8f9fa;
+  /* Why: Ensures the gray background color extends to the bottom of the viewport 
+     even if the inventory list is short (prevents the "white bottom" issue). */
+  min-height: 100vh;
+}
+
+.page-title {
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  font-weight: 600;
+  /* VISUAL SEPARATION: A bottom border acts as a semantic divider, 
+     clearly distinguishing the header area from the operational content below. */
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+/* --- CONTROL PANEL --- */
+.actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  /* Why: 'Floating' effect. The shadow lifts the controls off the gray background 
+     to draw attention to the primary actions (Search/Add). */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  gap: 15px;
+  /* Why: Responsive safety. If the screen is too narrow (mobile), 
+     the buttons and search bar will wrap to a new line instead of overlapping or shrinking. */
+  flex-wrap: wrap;
+}
+
+.search-input {
+  /* Why: 'flex: 1' allows the search bar to greedily take up all remaining empty space 
+     after the buttons are rendered. */
+  flex: 1;
+  max-width: 400px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.add-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* --- DATA PRESENTATION --- */
+.table-container {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  /* Why: CRITICAL. This clips the corners of the internal <table>. 
+     Without this, the square corners of the table header would stick out 
+     of the container's rounded corners (10px). */
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.inventory-table {
+  width: 100%;
+  /* Why: Removes the default double-border spacing between cells 
+     for a clean, modern, single-line grid look. */
+  border-collapse: collapse;
+}
+
+.inventory-table th {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  text-align: left;
+  padding: 15px;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.inventory-table td {
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+  vertical-align: middle;
+}
+
+.table-row-hover:hover {
+  background-color: #f1f3f5;
+  /* Why: Affordance. Changing the cursor to a pointer signals to the user 
+     that this row is interactive (clickable to view details). */
+  cursor: pointer;
+}
+
+.price-tag {
+  font-weight: 600;
+  color: #495057;
+}
+
+/* --- MODAL SYSTEM --- */
+.modal-overlay {
+  /* VISUAL ROOT: This removes the element from the normal document flow 
+     and pins it relative to the viewport window. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Why: Dimming the background focuses user attention exclusively on the modal task. */
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Why: High Z-Index ensures the modal floats on top of everything else, 
+     including navigation bars or floating action buttons. */
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  /* Why: Prevents the modal from becoming unreadably wide on desktop screens. */
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-group input, .form-group select {
+  /* Why: Full width inputs ensure consistency and are easier to tap on mobile devices. */
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.modal-actions {
+  /* Why: Right-alignment follows the standard reading pattern for concluding actions (Next/Save). */
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-save {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.loading-text {
+  padding: 40px;
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+}

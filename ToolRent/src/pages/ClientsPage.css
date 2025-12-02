@@ -1,0 +1,137 @@
+/* --- Main Container (Same structure as RentalDetail) --- */
+.clients-container {
+  /* Why: Using 95% instead of a fixed pixel width ensures the layout is fluid 
+     and adapts to different screen sizes without creating horizontal scrollbars on smaller laptops. */
+  max-width: 95%;
+  margin: 30px auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #333;
+  /* Why: Whitespace below the title establishes hierarchy, clearly separating the page header from the content. */
+  margin-bottom: 25px;
+}
+
+/* --- Actions Bar (Search + Button) --- */
+.actions-bar {
+  /* Why: Flexbox 'space-between' pushes the Search Bar to the far left and the Button to the far right, 
+     balancing the UI visually. */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  background: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  /* Why: This creates a "Floating Card" effect, grouping the controls together and lifting them off the background. */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+}
+
+/* --- Table Container (Card Style) --- */
+.table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+  border: 1px solid #f0f0f0;
+  /* Why: CRITICAL. Since the container has rounded corners (radius 12px), but the internal HTML <table> has square corners,
+     'overflow: hidden' cuts off the table's corners so they don't poke out of the container. */
+  overflow: hidden; 
+}
+
+/* --- Table Styles --- */
+.clients-table {
+  width: 100%;
+  border-collapse: collapse;
+  /* Why: Prevents the table from crushing columns into unreadable strips on mobile. 
+     If the screen is smaller than 600px, this forces the container to scroll horizontally. */
+  min-width: 600px; 
+}
+
+/* Table Header */
+.clients-table thead th {
+  text-align: left;
+  font-size: 0.75rem;
+  /* Why: Standard UI pattern for headers. Uppercase + small font acts as "Metadata", 
+     distinguishing it from the actual content rows. */
+  text-transform: uppercase;
+  color: #888;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 18px 25px;
+  border-bottom: 2px solid #f5f5f5;
+  background-color: #fff;
+}
+
+/* Table Body */
+.clients-table tbody td {
+  /* Why: "Generous Breathing Room". High padding (20px) makes the data easier to scan 
+     and gives the application a more premium, modern feel compared to cramped excel-style tables. */
+  padding: 20px 25px; 
+  border-bottom: 1px solid #f9f9f9;
+  color: #444;
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+/* Interactive Row */
+.client-row-hover {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.client-row-hover:hover {
+  /* Why: Affordance. Changing color and slightly moving the row (translateX) provides 
+     tactile feedback, confirming to the user that this element is interactive/clickable. */
+  background-color: #f8faff; 
+  transform: translateX(2px); 
+}
+
+/* Highlighted Text for RUT */
+.text-rut {
+  font-weight: 700;
+  color: #222;
+  /* Why: Monospaced fonts (like typewriter text) ensure all numbers have the same width. 
+     This makes comparing IDs or RUTs vertically much easier for the human eye. */
+  font-family: 'Consolas', monospace; 
+  letter-spacing: -0.5px;
+}
+
+/* --- Status Badges (Pills) --- */
+.status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  /* Why: 50px radius creates the "Pill" shape, which is universally recognized as a Tag or Status indicator. */
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-align: center;
+  /* Why: Ensures all badges (short like "OK" or long like "ERROR") take up similar visual weight in the column. */
+  min-width: 100px;
+}
+
+.status-active {
+  /* Why: Using a light pastel background with dark text ensures high contrast (accessibility) 
+     while looking cleaner than a solid heavy block of color. */
+  background-color: #e8f5e9; 
+  color: #2e7d32;           
+}
+
+.status-blocked {
+  background-color: #ffebee; 
+  color: #c62828;           
+}
+
+/* --- Loading State --- */
+.loading-text {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  font-style: italic;
+  font-size: 1.1rem;
+}

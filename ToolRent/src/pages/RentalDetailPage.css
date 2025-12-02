@@ -1,0 +1,193 @@
+/* Main Container */
+.details-container {
+  /* Why: Using percentage (95%) instead of fixed pixels makes the layout fluid. 
+     It uses almost all available screen real estate on small laptops while maintaining 
+     safe margins on the sides. */
+  max-width: 95%;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* --- 1. Page Header (Outside Cards) --- */
+.page-header {
+  /* Why: Flexbox aligns the Title (left) and Back Button (right) on the same horizontal line, 
+     creating a standard navigation header pattern. */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  background-color: transparent;
+}
+
+.page-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #222;
+  margin: 0;
+}
+
+.btn-back {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 8px 20px;
+  border-radius: 6px;
+  color: #666;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  /* Why: Subtle shadow gives the button "clickability" affordance, separating it from the background. */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.btn-back:hover {
+  border-color: #bbb;
+  color: #333;
+}
+
+/* --- 2. Generic Cards (Card Style) --- */
+.rental-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  /* Why: Soft modern shadow adds depth (Elevation 1). It groups related information 
+     into a cohesive unit that floats above the gray page background. */
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04); 
+  margin-bottom: 25px;
+  border: 1px solid #f0f0f0;
+}
+
+/* Inner Card Header (Title + Action Button) */
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  /* Why: A structural divider line separates the card's controls/title from the actual data content below. */
+  border-bottom: 2px solid #f8f8f8;
+  padding-bottom: 15px;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #444;
+  margin: 0;
+}
+
+.total-items {
+  font-size: 0.9rem;
+  color: #999;
+  font-weight: normal;
+  margin-left: 10px;
+}
+
+/* --- 3. Information Grid (Labels & Values) --- */
+.info-grid {
+  /* VISUAL STRUCTURE: Dashboard Layout. */
+  /* Why: Creates a strict 4-column layout. This allows the user to scan key metrics (Dates, Costs, Status) 
+     horizontally in a single glance rather than scrolling down a list. */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 30px;
+}
+
+.info-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-text {
+  font-size: 0.7rem;
+  /* Why: Uppercase + Small Font creates a "Metadata" look, clearly distinguishing 
+     the field name from the actual data value below it. */
+  text-transform: uppercase;
+  color: #999;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.value-text {
+  font-size: 1.05rem;
+  color: #222;
+  font-weight: 500;
+}
+
+/* Special Value Styles */
+.text-highlight { color: #0056b3; font-weight: 600; }
+.text-price { font-family: 'Consolas', monospace; letter-spacing: -0.5px; }
+
+/* Status Badges (Pills) */
+.status-pill {
+  display: inline-block;
+  padding: 6px 14px;
+  /* Why: Full radius (20px) creates the "Pill" shape, universally recognized in UI as a Tag or Status. */
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.pill-active { background-color: #e3f2fd; color: #1565c0; }
+.pill-overdue { background-color: #ffebee; color: #d32f2f; }
+.pill-returned { background-color: #e8f5e9; color: #2e7d32; }
+
+/* --- 4. Yellow Action Button (Primary CTA) --- */
+.btn-action-yellow {
+  /* VISUAL HIERARCHY: Primary Call-to-Action. */
+  /* Why: Intense yellow draws the eye immediately. This is the most important button on the page 
+     (e.g., "Return Items"), so it must stand out against the white/gray interface. */
+  background-color: #ffd600; 
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(255, 214, 0, 0.3);
+  transition: transform 0.1s;
+}
+.btn-action-yellow:hover {
+  background-color: #ffea00;
+  /* Why: Micro-interaction. The button lifts up slightly when hovered, signaling interactivity. */
+  transform: translateY(-1px);
+}
+
+/* --- 5. Clean Table Styles --- */
+.clean-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.clean-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #aaa;
+  font-weight: 700;
+  padding: 15px 10px;
+  /* Why: Minimalist separator. A light border defines the header area without adding visual clutter. */
+  border-bottom: 1px solid #eee;
+}
+
+.clean-table td {
+  padding: 15px 10px;
+  border-bottom: 1px solid #fcfcfc;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+/* Why: Removes the bottom border from the last row to make the table look cleaner inside the card container. */
+.clean-table tr:last-child td { border-bottom: none; }
+
+/* Grid Responsiveness */
+@media (max-width: 900px) {
+  /* Why: On tablets, 4 columns are too squeezed. We switch to 2 columns (2x2 grid). */
+  .info-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  /* Why: On mobile, we stack everything vertically (1 column) for easy scrolling. */
+  .info-grid { grid-template-columns: 1fr; }
+  .card-header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+}

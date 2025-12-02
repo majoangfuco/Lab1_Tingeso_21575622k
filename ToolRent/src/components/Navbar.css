@@ -1,0 +1,102 @@
+/* 1. Main Navigation Bar */
+.navbar {
+  /* VISUAL ENDPOINT: The Flexbox container establishes the layout context. */
+  /* Why: Using 'align-items: center' ensures that elements of varying heights (logo vs text vs buttons) 
+     are vertically centered relative to each other, preventing awkward misalignments. */
+  display: flex;
+  align-items: center;
+  background-color: #ebcc1c;
+  padding: 0 20px;
+  height: 75px;
+  color: white;
+}
+
+/* 2. LEFT BLOCK (Logo + Brand Name) */
+.navbar-left {
+  /* Why: Setting 'flex: 1' here (and on the right block) creates symmetry. 
+     It forces the left and right sections to occupy equal width, which guarantees 
+     that the center block (links) remains perfectly centered on the screen. */
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* 3. The Logo */
+.logo-avatar {
+  height: 85px;
+  width: auto;
+  /* Why: 'contain' ensures the image scales down to fit without being cropped or distorted. */
+  object-fit: contain;
+  margin-top: 8px;
+  
+  /* Why: Negative margin acts as a visual correction. It pulls the text closer to the image, 
+     likely compensating for excessive transparent whitespace built into the image file itself. */
+  margin-right: -40px; 
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #8f0000;
+}
+
+/* 4. CENTER BLOCK (Navigation Links) */
+.navbar-links {
+  /* Why: This block also takes 'flex: 1' to participate in the equal distribution of space. */
+  flex: 1;
+  display: flex;
+  /* Why: 'justify-content: center' groups the navigation links in the middle of the available space, 
+     serving as the primary focal point for navigation. */
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li {
+  padding: 0 15px;
+}
+
+.navbar-links a {
+  color: #006165;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 20px 0;
+  
+  /* VISUAL STABILITY: The Transparent Border Technique. */
+  /* Why: We define a transparent border here so that when the '.active' class adds a visible white border later, 
+     the element's total height doesn't change. This prevents the text from "jumping" or shifting pixels 
+     when the state changes. */
+  border-bottom: 3px solid transparent;
+}
+
+.navbar-links a.active {
+  color: #ffffff;
+  /* Why: Visual feedback for the current location. The border appears, replacing the transparent one. */
+  border-bottom: 3px solid #ffffff;
+}
+
+/* 5. RIGHT BLOCK (User Profile / Logout) */
+.navbar-user {
+  flex: 1;
+  display: flex;
+  /* Why: 'flex-end' pushes the content to the far right edge. 
+     This follows the standard UX pattern where user profile actions are always found in the top-right corner. */
+  justify-content: flex-end;
+  align-items: center;
+  gap: 30px;
+}
+
+.logout-button {
+  background-color: #039bb6;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.logout-button:hover {
+  background-color: #710D0B;
+}
