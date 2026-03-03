@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ToolRankingWidget = ({ rankingData }) => {
   // Why: Defensive coding. If the API fails or returns null/undefined instead of an array,
@@ -32,11 +33,12 @@ const ToolRankingWidget = ({ rankingData }) => {
             if (!toolName) toolName = item.nameTool || item.toolCode || 'Herramienta Desconocida';
 
             const count = item.count || item.usageCount || 0;
+            // Use unique tool identifier for key instead of array index to allow React to properly track 
+            // items if the ranking order changes. Falls back to toolCode if toolId is unavailable.
+            const uniqueKey = item.tool?.toolId || item.toolId || item.toolCode || toolName;
 
             return (
-              // Why: We use the index as a key here strictly because this is a static read-only list 
-              // that won't be reordered or filtered interactively.
-              <li key={index} style={{display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #eee'}}>
+              <li key={uniqueKey} style={{display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #eee'}}>
                 <span style={{fontWeight: '500', color: '#555'}}>
                     {/* Why: Adding 'index + 1' visually reinforces the concept of a "Leaderboard" or Ranking (1st, 2nd, 3rd). */}
                     {index + 1}. <span style={{fontWeight:'700', color:'#333'}}>{toolName}</span>
@@ -50,6 +52,22 @@ const ToolRankingWidget = ({ rankingData }) => {
       </ul>
     </div>
   );
+};
+
+ToolRankingWidget.propTypes = {
+  rankingData: PropTypes.arrayOf(
+    PropTypes.shape({
+      tool: PropTypes.shape({
+        toolId: PropTypes.number,
+        nameTool: PropTypes.string
+      }),
+      toolId: PropTypes.number,
+      nameTool: PropTypes.string,
+      toolCode: PropTypes.string,
+      count: PropTypes.number,
+      usageCount: PropTypes.number
+    })
+  )
 };
 
 export default ToolRankingWidget;

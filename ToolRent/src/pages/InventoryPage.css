@@ -1,9 +1,8 @@
 /* --- LAYOUT STRUCTURE --- */
 .inventory-container {
   padding: 30px;
-  /* Why: Limits the content width on large monitors to ensure lines of text/tables 
-     remain readable and don't stretch indefinitely across the screen. */
-  max-width: 1200px;
+  /* Why: Increased width to utilize available horizontal space better. */
+  max-width: 100%;
   margin: 0 auto;
   font-family: 'Segoe UI', sans-serif;
   background-color: #f8f9fa;
@@ -167,13 +166,22 @@
   margin-top: 30px;
 }
 
-.btn-cancel {
-  background-color: #dc3545;
+/* Unified Button Styling */
+.btn-outline-primary {
+  background-color: #039bb6;
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: #0285a0;
+  transform: translateY(-1px);
 }
 
 .btn-save {
@@ -181,8 +189,51 @@
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-save:hover:not(:disabled) {
+  background-color: #218838;
+  transform: translateY(-1px);
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
 }
 
 .loading-text {
@@ -190,4 +241,73 @@
   text-align: center;
   color: #666;
   font-size: 1.1rem;
+}
+
+.filter-select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: white;
+  color: #000;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.filter-select:hover {
+  border-color: #999;
+  background-color: #f9fafb;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #039bb6;
+  box-shadow: 0 0 0 2px rgba(3, 155, 182, 0.1);
+}
+
+/* Table Action Buttons */
+.btn-table-edit {
+  border: none;
+  background: transparent;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.btn-table-edit:hover {
+  color: #0056b3;
+  transform: scale(1.15);
+}
+
+.btn-table-save {
+  border: none;
+  background: transparent;
+  color: #28a745;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.btn-table-save:hover {
+  color: #1e7e34;
+  transform: scale(1.15);
+}
+
+.btn-table-cancel {
+  border: none;
+  background: transparent;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.btn-table-cancel:hover {
+  color: #a71d2a;
+  transform: scale(1.15);
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import '../pages/ClientsPage.css';
 
@@ -26,7 +27,23 @@ const ClientList = ({ clients, isLoading }) => {
 
   return (
     <div className="table-container">
+      <div style={{marginBottom: '15px', padding: '12px', backgroundColor: '#e3f2fd', borderRadius: '6px', border: '1px solid #90caf9', color: '#0c47a1', fontSize: '0.9rem'}}>
+        💡 <strong>Tip:</strong> Haz clic en cualquier cliente para ver más detalles, crear arriendos, revisar o actualizar su información.
+      </div>
       <table className="clients-table">
+        <caption style={{
+          position: 'absolute',
+          width: '1px',
+          height: '1px',
+          padding: '0',
+          margin: '-1px',
+          overflow: 'hidden',
+          clip: 'rect(0, 0, 0, 0)',
+          whiteSpace: 'nowrap',
+          borderWidth: '0'
+        }}>
+          Listado de clientes registrados en ToolRent
+        </caption>
         <thead>
           <tr>
             <th>RUT</th>
@@ -65,6 +82,20 @@ const ClientList = ({ clients, isLoading }) => {
       </table>
     </div>
   );
+};
+
+ClientList.propTypes = {
+  clients: PropTypes.arrayOf(
+    PropTypes.shape({
+      idClient: PropTypes.number.isRequired,
+      rut: PropTypes.string.isRequired,
+      clientName: PropTypes.string.isRequired,
+      mail: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
+      clientStatus: PropTypes.bool.isRequired,
+    })
+  ).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default ClientList;

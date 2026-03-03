@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const EditClientModal = ({ isOpen, onClose, clientData, onSave }) => {
   // Why: We create a local copy of data to allow editing without mutating the parent state directly before saving.
@@ -33,5 +34,20 @@ const EditClientModal = ({ isOpen, onClose, clientData, onSave }) => {
   )
 };
 
+EditClientModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  clientData: PropTypes.shape({
+    rut: PropTypes.string,
+    clientName: PropTypes.string,
+    mail: PropTypes.string,
+    phone: PropTypes.string,
+  }),
+  onSave: PropTypes.func.isRequired,
+};
+
+EditClientModal.defaultProps = {
+  clientData: null,
+};
 
 export default EditClientModal;

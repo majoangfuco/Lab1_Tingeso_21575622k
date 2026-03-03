@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../pages/ClientsPage.css';
 
 const AddClientButton = ({ onClick }) => {
@@ -9,6 +10,10 @@ const AddClientButton = ({ onClick }) => {
       <span>+</span> Nuevo Cliente
     </button>
   );
+};
+
+AddClientButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
 };
 
 export default AddClientButton;

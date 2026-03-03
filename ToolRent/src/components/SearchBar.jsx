@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../pages/ClientsPage.css';
 
 // Why: This component is designed to be "stateless" (dumb). It doesn't decide what to do with the text; 
@@ -18,6 +19,11 @@ const SearchBar = ({ searchTerm, setSearchTerm }) => {
       onChange={(e) => setSearchTerm(e.target.value)}
     />
   );
+};
+
+SearchBar.propTypes = {
+  searchTerm: PropTypes.string.isRequired,
+  setSearchTerm: PropTypes.func.isRequired
 };
 
 export default SearchBar;

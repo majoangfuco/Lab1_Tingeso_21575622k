@@ -1,73 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import '../pages/ClientsPage.css';
-
-// Why: Defining styles in JS objects keeps the modal self-contained and avoids external CSS conflicts, 
-// ensuring consistent rendering regardless of the parent's stylesheet.
-const styles = {
-  modalOverlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1000,
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: '30px',
-    borderRadius: '8px',
-    width: '90%',
-    maxWidth: '500px',
-    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-  },
-  title: {
-    marginTop: 0,
-    color: '#007bff',
-    textAlign: 'center'
-  },
-  formGroup: {
-    marginBottom: '15px',
-  },
-  label: {
-    display: 'block',
-    marginBottom: '5px',
-    fontWeight: '500',
-  },
-  input: {
-    width: '100%',
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    fontSize: '1rem',
-    boxSizing: 'border-box', 
-  },
-  modalActions: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    gap: '10px',
-    marginTop: '20px',
-  },
-  btnCancel: {
-    backgroundColor: '#6c757d',
-    color: 'white',
-    border: 'none',
-    padding: '10px 20px',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  btnSave: {
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    padding: '10px 20px',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  }
-};
+import './NewClientModal.css';
 
 const NewClientModal = ({ isOpen, onClose, onSave, clientData }) => {
   const [formData, setFormData] = useState({
@@ -99,16 +33,16 @@ const NewClientModal = ({ isOpen, onClose, onSave, clientData }) => {
   };
 
   return (
-    <div style={styles.modalOverlay}>
-      <div style={styles.modalContent}>
+    <div className="modal-overlay">
+      <div className="modal-content">
         {/* Why: Dynamic title provides immediate context to the user about whether they are modifying existing data or creating new data. */}
-        <h2 style={styles.title}>
+        <h2 className="modal-title">
           {clientData ? 'Editar Cliente' : 'Nuevo Cliente'}
         </h2>
         
         <form onSubmit={handleSubmit}>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>RUT</label>
+          <div className="form-group">
+            <label>RUT</label>
             <input 
               type="text" 
               placeholder="Ej: 12345678-9"
@@ -119,50 +53,62 @@ const NewClientModal = ({ isOpen, onClose, onSave, clientData }) => {
               // so we lock this field during edits to maintain data integrity.
               disabled={!!clientData} 
               style={{ 
-                ...styles.input, 
                 backgroundColor: clientData ? '#e9ecef' : 'white', 
                 cursor: clientData ? 'not-allowed' : 'text' 
               }} 
             />
           </div>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Nombre Completo</label>
+          <div className="form-group">
+            <label>Nombre Completo</label>
             <input 
               type="text" 
               value={formData.clientName || ''}
               onChange={e => setFormData({...formData, clientName: e.target.value})}
               required 
-              style={styles.input}
             />
           </div>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Correo Electrónico</label>
+          <div className="form-group">
+            <label>Correo Electrónico</label>
             <input 
               type="email" 
               value={formData.mail || ''}
               onChange={e => setFormData({...formData, mail: e.target.value})}
               required 
-              style={styles.input}
             />
           </div>
-          <div style={styles.formGroup}>
-            <label style={styles.label}>Teléfono</label>
+          <div className="form-group">
+            <label>Teléfono</label>
             <input 
               type="text" 
               value={formData.phone || ''}
               onChange={e => setFormData({...formData, phone: e.target.value})}
-              style={styles.input}
               required
             />
           </div>
-          <div style={styles.modalActions}>
-            <button type="button" style={styles.btnCancel} onClick={onClose}>Cancelar</button>
-            <button type="submit" style={styles.btnSave}>Guardar</button>
+          <div className="modal-actions">
+            <button type="button" className="btn-cancel" onClick={onClose}>Cancelar</button>
+            <button type="submit" className="btn-save">Guardar</button>
           </div>
         </form>
       </div>
     </div>
   );
+};
+
+NewClientModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  clientData: PropTypes.shape({
+    rut: PropTypes.string,
+    clientName: PropTypes.string,
+    mail: PropTypes.string,
+    phone: PropTypes.string,
+  }),
+};
+
+NewClientModal.defaultProps = {
+  clientData: null,
 };
 
 export default NewClientModal;

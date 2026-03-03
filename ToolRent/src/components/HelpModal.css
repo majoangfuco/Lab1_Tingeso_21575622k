@@ -1,0 +1,154 @@
+.help-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.help-modal-content {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.help-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #f9fafb;
+}
+
+.help-modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #000000;
+  font-weight: 700;
+}
+
+.help-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.help-modal-close:hover {
+  color: #333;
+}
+
+.help-modal-body {
+  flex: 1;
+  padding: 30px;
+}
+
+.help-step-counter {
+  font-size: 0.85rem;
+  color: #999;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 15px;
+}
+
+.help-modal-body h3 {
+  font-size: 1.3rem;
+  color: #000000;
+  margin: 0 0 15px 0;
+  font-weight: 700;
+}
+
+.help-modal-body p {
+  font-size: 0.95rem;
+  color: #000000;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+}
+
+.help-step-indicators {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.help-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.help-dot.active {
+  background-color: #ebcc1c;
+}
+
+.help-dot:hover {
+  background-color: #bbb;
+}
+
+.help-modal-footer {
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f9fafb;
+  justify-content: flex-end;
+}
+
+.help-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.help-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.help-btn-prev,
+.help-btn-next {
+  background-color: #039bb6;
+  color: white;
+}
+
+.help-btn-prev:hover:not(:disabled),
+.help-btn-next:hover:not(:disabled) {
+  background-color: #0285a0;
+}
+
+.help-btn-close {
+  background-color: #ebcc1c;
+  color: #000000;
+}
+
+.help-btn-close:hover {
+  background-color: #d9bc17;
+}

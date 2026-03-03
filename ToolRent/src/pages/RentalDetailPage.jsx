@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import RentalService from '../services/RentalService';
 import KardexService from '../services/KardexService';
-import ReturnRentalModal from '../components/ReturnRentalModal'; 
+import ReturnRentalModal from '../components/ReturnRentalModal';
+import PageLayout from '../components/PageLayout';
+import { tutorialContent } from '../tutorials/tutorialContent';
 import './RentalDetailPage.css'; 
 
 const RentalDetailPage = () => {
@@ -36,7 +38,8 @@ const RentalDetailPage = () => {
                 ]);
 
                 // Why: Fallback for different API response structures (sometimes it's data.data, sometimes just data).
-                setRental(rentalRes.data ? rentalRes.data : rentalRes);
+                const rentalData = rentalRes.data ? rentalRes.data : rentalRes;
+                setRental(rentalData);
 
                 // Why: Defensive Coding. The API response structure might vary (direct array vs wrapped object).
                 // This logic normalizes it to ensure 'finalTools' is always a valid array, preventing render crashes.
@@ -45,6 +48,11 @@ const RentalDetailPage = () => {
                 else if (toolsRes && Array.isArray(toolsRes.data)) finalTools = toolsRes.data;
                 
                 setTools(finalTools);
+                
+                // VALIDATION: Show alert if rental has already been returned
+                if (rentalData && rentalData.rentalStatus === 2) {
+                  alert("Este arriendo ya fue devuelto. La informacion mostrada es historica.");
+                }
 
             } catch (err) {
                 console.error(err);
@@ -71,7 +79,8 @@ const RentalDetailPage = () => {
     const statusInfo = getStatusInfo(rental.rentalStatus);
 
     return (
-        <div className="details-container">
+        <PageLayout tutorialData={tutorialContent.rentalDetail}>
+            <div className="details-container">
             
             {/* Header */}
             <div className="page-header">
@@ -200,7 +209,8 @@ const RentalDetailPage = () => {
                 tools={tools}
                 onSuccess={handleReturnSuccess}
             />
-        </div>
+            </div>
+        </PageLayout>
     );
 };
 

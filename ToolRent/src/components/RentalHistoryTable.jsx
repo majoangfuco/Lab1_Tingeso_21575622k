@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 const RentalHistoryTable = ({ rentals }) => {
@@ -73,6 +74,17 @@ const RentalHistoryTable = ({ rentals }) => {
       </table>
     </div>
   );
+};
+
+RentalHistoryTable.propTypes = {
+  rentals: PropTypes.arrayOf(
+    PropTypes.shape({
+      rentalId: PropTypes.number.isRequired,
+      rentalStatus: PropTypes.number.isRequired,
+      rentalDate: PropTypes.string.isRequired,
+      returnDate: PropTypes.string.isRequired
+    })
+  ).isRequired
 };
 
 export default RentalHistoryTable;

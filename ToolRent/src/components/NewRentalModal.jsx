@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import InventoryService from '../services/InventoryService';
 import '../pages/ClientsPage.css';
 
@@ -65,7 +66,22 @@ const NewRentalModal = ({ isOpen, onClose, onSave, clientName }) => {
   };
 
   const handleAddTool = () => {
-    if (!selectedUnitId) return;
+    if (!selectedTypeId) {
+      alert("Por favor selecciona un tipo de herramienta.");
+      return;
+    }
+    
+    if (!selectedUnitId) {
+      alert("Por favor selecciona una unidad disponible.");
+      return;
+    }
+    
+    // Check if selected type has available units
+    if (availableUnits.length === 0) {
+      alert("No hay unidades disponibles para este tipo de herramienta. Selecciona otro tipo.");
+      return;
+    }
+    
     const unitToAdd = availableUnits.find(u => u.toolId === parseInt(selectedUnitId));
     const typeInfo = catalog.find(t => t.idInformationTool === parseInt(selectedTypeId));
 
@@ -112,11 +128,11 @@ const NewRentalModal = ({ isOpen, onClose, onSave, clientName }) => {
         <form onSubmit={handleSubmit}>
           <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'15px'}}>
             <div className="form-group">
-              <label>Fecha Inicio</label>
+              <label>Fecha y hora de Inicio</label>
               <input type="datetime-local" required value={dates.startDate} onChange={e => setDates({...dates, startDate: e.target.value})} />
             </div>
             <div className="form-group">
-              <label>Fecha Término</label>
+              <label>Fecha y hora de Término</label>
               <input type="datetime-local" required value={dates.endDate} onChange={e => setDates({...dates, endDate: e.target.value})} />
             </div>
           </div>
@@ -184,5 +200,11 @@ const NewRentalModal = ({ isOpen, onClose, onSave, clientName }) => {
   );
 };
 
+NewRentalModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  clientName: PropTypes.string.isRequired
+};
 
 export default NewRentalModal;

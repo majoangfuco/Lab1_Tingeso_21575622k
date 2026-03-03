@@ -5,6 +5,8 @@ import RentalService from '../services/RentalService';
 import RentalHistoryTable from '../components/RentalHistoryTable';
 import EditClientModal from '../components/NewClientModal';
 import NewRentalModal from '../components/NewRentalModal';
+import PageLayout from '../components/PageLayout';
+import { tutorialContent } from '../tutorials/tutorialContent';
 import '../pages/ClientDetailPage.css';  
 
 const ClientDetailsPage = () => {
@@ -22,7 +24,8 @@ const ClientDetailsPage = () => {
   const [isRentalModalOpen, setIsRentalModalOpen] = useState(false);
 
   const [paymentAmount, setPaymentAmount] = useState("");
-  const [isPaying, setIsPaying] = useState(false); 
+  const [isPaying, setIsPaying] = useState(false);
+  const [isCreatingRental, setIsCreatingRental] = useState(false); 
   
   // ENDPOINT DATA: This function acts as the central data hub.
   // Why: Wrapped in 'useCallback' to ensure referential stability, allowing it to be safely added 
@@ -35,10 +38,29 @@ const ClientDetailsPage = () => {
       setClient(clientData);
 
       // Why: We only fetch rentals if the client exists, avoiding 404 errors on the rental endpoint.
-      if (clientData && clientData.idClient) {
+      if (clientData?.idClient) {
         // ENDPOINT QUERY: Fetches history based on the current filter selection (Active, Overdue, etc.).
         const rentalRes = await RentalService.getByClientId(clientData.idClient, historyFilter);
-        setRentals(rentalRes.data || []);
+        const rentalsData = rentalRes.data || [];
+        setRentals(rentalsData);
+        
+        // VALIDATIONS: Show alerts if client has issues
+        // Check for overdue rentals
+        const hasOverdue = rentalsData.some(r => r.rentalStatus === 1);
+        if (hasOverdue) {
+          alert("ADVERTENCIA: Este cliente tiene prestamos ATRASADOS. No se la puede dar mas prestamos hasta que regularice su situacion.");
+        }
+        
+        // Check for debt
+        if (clientData.amountClient > 0) {
+          alert("ADVERTENCIA: Este cliente tiene una DEUDA pendiente de $" + clientData.amountClient + ". No se la puede dar prestamo mientras tenga deuda.");
+        }
+        
+        // Check for max active rentals (5)
+        const activeRentals = rentalsData.filter(r => r.rentalStatus === 0);
+        if (activeRentals.length >= 5) {
+          alert("LIMITE ALCANZADO: Este cliente ya tiene 5 prestamos activos (maximo permitido). No se la puede dar mas prestamos.");
+        }
       }
     } catch (error) {
       console.error(error);
@@ -62,6 +84,7 @@ const ClientDetailsPage = () => {
 
   const handleCreateRental = async (rentalData) => {
     try {
+      setIsCreatingRental(true);
       // Why: We enrich the payload with the context ID (clientRut) which the modal doesn't know about.
       const payload = { ...rentalData, clientRut: client.rut };
       
@@ -78,6 +101,8 @@ const ClientDetailsPage = () => {
     } catch (error) {
       const msg = error.response?.data?.error || "Error desconocido.";
       alert(`Error: ${msg}`);
+    } finally {
+      setIsCreatingRental(false);
     }
   };
 
@@ -119,18 +144,26 @@ const ClientDetailsPage = () => {
   if (!client) return <div className="loading-text">Cliente no encontrado.</div>;
 
   return (
-    <div className="details-container">
+    <PageLayout tutorialData={tutorialContent.clientDetail}>
+      <div className="details-container">
       
       <div className="details-header">
         <h1 className="details-title">Detalle del Cliente</h1>
-        <button className="back-btn" onClick={() => navigate('/clientes')}>← Volver</button>
+                        <button className="btn-back" onClick={() => navigate('/clientes')}>
+                    ← Volver a Clientes y Arriendos
+                </button>
       </div>
 
       <div className="main-grid">
 
         {/* LEFT CARD: User Profile */}
         <div className="detail-card">
-          <h2 className="section-title" style={{marginBottom:'20px'}}>Datos Personales</h2>
+          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'20px'}}>
+            <h2 className="section-title" style={{margin: 0}}>Datos Personales</h2>
+            <button className="action-btn btn-back" onClick={() => setIsEditModalOpen(true)}>
+                ✎ Editar Info
+            </button>
+          </div>
           <ul className="data-list">
              <li className="data-item status-item" style={{border:0, marginBottom:'20px'}}>
                <span className="label">Estado</span>
@@ -170,12 +203,10 @@ const ClientDetailsPage = () => {
                         <button 
                             onClick={handlePayment}
                             disabled={isPaying}
-                            style={{
-                                backgroundColor: '#28a745', color:'white', border:'none',
-                                borderRadius:'6px', padding:'0 15px', fontWeight:'bold', cursor:'pointer', whiteSpace: 'nowrap'
-                            }}
+                            className="action-btn"
+                            style={{width: 'auto', marginLeft: '5px'}}
                         >
-                            {isPaying ? '...' : 'Pagar'}
+                            {isPaying ? 'Cargando...' : 'Pagar'}
                         </button>
                     </div>
                 )}
@@ -183,11 +214,6 @@ const ClientDetailsPage = () => {
               <li className="data-item"><span className="label">Teléfono</span><span className="value">{client.phone || '-'}</span></li>  
               <li className="data-item"><span className="label">Email</span><span className="value">{client.mail || '-'}</span></li>            
             </ul>
-          <div style={{marginTop: 'auto'}}> 
-            <button className="action-btn btn-edit w-full" onClick={() => setIsEditModalOpen(true)}>
-                ✎ Editar Info
-            </button>
-          </div>
         </div>
 
         {/* RIGHT CARD: Transaction History */}
@@ -202,7 +228,7 @@ const ClientDetailsPage = () => {
               <select 
                     value={historyFilter} 
                     onChange={(e) => setHistoryFilter(e.target.value)} 
-                    style={{padding:'6px', borderRadius:'4px', border:'1px solid #ddd'}}
+                    className="filter-select"
                 >
                     <option value="all">Todos</option>
                     <option value="0">En Curso</option>
@@ -215,10 +241,10 @@ const ClientDetailsPage = () => {
               <button 
                     className="btn-new-rental" 
                     onClick={() => setIsRentalModalOpen(true)} 
-                    disabled={!client.clientStatus}
+                    disabled={!client.clientStatus || isCreatingRental}
                     title={!client.clientStatus ? "Cliente bloqueado" : "Crear nuevo arriendo"}
                 >
-                    + Nuevo Arriendo
+                    {isCreatingRental ? 'Cargando...' : '+ Nuevo Arriendo'}
                 </button>
             </div>
           </div>
@@ -231,7 +257,8 @@ const ClientDetailsPage = () => {
 
       <EditClientModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} clientData={client} onSave={handleSaveClient} />
       <NewRentalModal isOpen={isRentalModalOpen} onClose={() => setIsRentalModalOpen(false)} clientName={client.clientName} onSave={handleCreateRental} />
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

@@ -1,8 +1,18 @@
 /* src/pages/HomePage.css */
 
+.home-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 40px;
+  align-items: flex-start;
+}
+
 .profile-card {
   /* Why: Internal padding creates "breathing room" so the text and image don't touch the card edges. */
-  padding: 40px;
+  padding: 30px;
   border-radius: 12px;
   background-color: #ffffff;
   
@@ -13,12 +23,13 @@
   
   /* Why: A subtle border defines the boundary clearly, especially on screens with low contrast or high brightness. */
   border: 1px solid #e0e0e0;
+  height: fit-content;
 }
 
 .profile-avatar {
   /* Why: Fixed dimensions ensure layout stability. Without this, a large uploaded image would break the page layout. */
-  width: 450px;
-  height: 400px;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
   
   /* VISUAL LAYER 1: The inner border (touching the image). */
@@ -38,17 +49,89 @@
 
 .profile-name {
   /* Why: Large font size establishes this text as the primary visual hierarchy element (The most important info). */
-  font-size: 1.8rem;
+  font-size: 1.3rem;
   font-weight: 600;
-  color: #333;
+  color: #000000;
   margin: 10px;
   /* Why: Extra top margin provides visual balance, separating the text block from the large graphical avatar above. */
-  margin-top: 45px;
+  margin-top: 20px;
 }
 
 .profile-role {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   /* Why: Lighter color reduces visual importance, signaling to the user that this is secondary metadata (subtitle). */
-  color: #555;
-  margin-top: 10px;
+  color: #000000;
+  margin-top: 5px;
+}
+
+/* Info Cards Container */
+.info-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.clickable-card {
+  cursor: pointer;
+}
+
+.clickable-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  border-color: #039bb6;
+}
+
+.info-card-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 10px;
+  margin-top: 0;
+}
+
+.info-card-subtitle {
+  font-size: 0.85rem;
+  color: #039bb6;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.95rem;
+  color: #000000;
+  line-height: 1.8;
+}
+
+.card-features li {
+  padding-left: 25px;
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.card-features li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #039bb6;
+  font-weight: bold;
+  font-size: 1.1rem;
 }

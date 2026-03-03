@@ -87,6 +87,12 @@
   gap: 30px;
 }
 
+.navbar-username {
+  color: #000000;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
 .logout-button {
   background-color: #039bb6;
   color: white;

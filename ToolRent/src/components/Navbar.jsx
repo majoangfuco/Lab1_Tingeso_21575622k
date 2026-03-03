@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import './Navbar.css';
 
-import logo from '../assets/logoTR.png'; 
+import logo from '../assets/logoTR.webp';
 
 const Navbar = () => {
   // Why: We hook into the global authentication context. This single source of truth 
@@ -15,7 +15,14 @@ const Navbar = () => {
       
       {/* BLOQUE IZQUIERDO */}
       <div className="navbar-left">
-         <img src={logo} alt="Logo" className="logo-avatar" /> 
+         <img 
+          src={logo} 
+          alt="Logo ToolRent" 
+          className="logo-avatar" 
+          width="200"
+          height="114" 
+          loading="eager"
+        /> 
          <span className="navbar-brand">ToolRent</span>
       </div>
 
@@ -45,7 +52,7 @@ const Navbar = () => {
           <>
              {/* ENDPOINT DATA: We read user details directly from the JWT token cached in the browser.
                  Why: This avoids an unnecessary API call to the backend just to fetch the user's name. */}
-            <span>{keycloak.tokenParsed.preferred_username}</span>
+            <span className="navbar-username">{keycloak.tokenParsed.preferred_username}</span>
             <button onClick={() => keycloak.logout()} className="logout-button">
               Cerrar Sesión
             </button>

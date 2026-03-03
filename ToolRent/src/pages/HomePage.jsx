@@ -1,20 +1,17 @@
-import React, { useState } from 'react'; 
+import React from 'react'; 
 import { useKeycloak } from '@react-keycloak/web';
-
-import adminAvatar from '../assets/admin-avatar.png';
-import employeeAvatar from '../assets/employee-avatar.png';
-
-import RegisterUserModal from '../components/RegisterUserModal'; 
+import { useNavigate } from 'react-router-dom';
+import PageLayout from '../components/PageLayout';
+import { tutorialContent } from '../tutorials/tutorialContent';
+import adminAvatar from '../assets/admin-avatar.webp';
+import employeeAvatar from '../assets/employee-avatar.webp';
 
 import './HomePage.css'; 
 
 const HomePage = () => {
   // ENDPOINT AUTH: We hook into the global authentication state to derive UI permissions.
   const { keycloak } = useKeycloak();
-  
-  // Why: UI State Management. We need a local toggle to handle the modal's lifecycle (Open/Close) 
-  // without routing to a new page.
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Why: Authorization Checks. We pre-calculate these booleans once per render 
   // to avoid repetitive function calls (hasRealmRole) inside the JSX return block.
@@ -39,48 +36,70 @@ const HomePage = () => {
   }
 
   return (
-    <div className="home-container">
-      
-      <div className="profile-card">
-        {/* Why: 'profileImage' is a computed variable. This allows the component to be polymorphic 
-            (look different for Admins vs Employees) while using the exact same HTML structure. */}
-        <img src={profileImage} alt="Avatar de perfil" className="profile-avatar" />
-        <h2 className="profile-name">¡Bienvenido, {userName}!</h2>
-        <p className="profile-role"> <strong>{roleName}</strong></p>
+    <PageLayout tutorialData={tutorialContent.home}>
+      <div className="home-container">
         
-        {/* ENDPOINT SECURITY: Conditional Rendering. */}
-        {/* Why: We hide the 'Create User' button entirely for non-admins. 
-            This is a UX pattern (don't show what you can't touch) and a security layer. */}
-        {isAdmin && (
-            <div style={{marginTop: '20px'}}>
-                <button 
-                    className="action-btn-primary" 
-                    // ENDPOINT TRIGGER: Opens the registration flow.
-                    onClick={() => setIsRegisterModalOpen(true)}
-                    style={{
-                        padding: '10px 20px', 
-                        backgroundColor: '#28a745', 
-                        color: 'white', 
-                        border: 'none', 
-                        borderRadius: '5px', 
-                        fontWeight: 'bold',
-                        cursor: 'pointer'
-                    }}
-                >
-                    + Crear Usuario Sistema
-                </button>
-            </div>
-        )}
+        <div className="profile-card">
+          {/* Why: 'profileImage' is a computed variable. This allows the component to be polymorphic 
+              (look different for Admins vs Employees) while using the exact same HTML structure. */}
+          <img src={profileImage} alt="Avatar de perfil" className="profile-avatar" />
+          <h2 className="profile-name">¡Bienvenido, {userName}!</h2>
+          <p className="profile-role"> <strong>{roleName}</strong></p>
+        </div>
+
+        {/* Information Cards Section */}
+        <div className="info-cards-container">
+          <button 
+            className="info-card clickable-card" 
+            onClick={() => navigate('/clientes')}
+            type="button"
+            aria-label="Gestionar clientes"
+          >
+            <h3 className="info-card-title">Clientes</h3>
+            <p className="info-card-subtitle">Haz clic para gestionar clientes</p>
+            <ul className="card-features">
+              <li>Registrar nuevos clientes</li>
+              <li>Ver historial de arriendos</li>
+              <li>Actualizar datos de contacto</li>
+              <li>Revisar estado de deudas</li>
+            </ul>
+          </button>
+
+          <button 
+            className="info-card clickable-card" 
+            onClick={() => navigate('/inventario')}
+            type="button"
+            aria-label="Gestionar inventario"
+          >
+            <h3 className="info-card-title">Inventario</h3>
+            <p className="info-card-subtitle">Haz clic para gestionar herramientas</p>
+            <ul className="card-features">
+              <li>Agregar nuevas unidades</li>
+              <li>Editar información de herramientas</li>
+              <li>Cambiar estado de unidades</li>
+              <li>Visualizar disponibilidad</li>
+            </ul>
+          </button>
+
+          <button 
+            className="info-card clickable-card" 
+            onClick={() => navigate('/kardex')}
+            type="button"
+            aria-label="Ver reportes de Kardex"
+          >
+            <h3 className="info-card-title">Kardex</h3>
+            <p className="info-card-subtitle">Haz clic para ver reportes</p>
+            <ul className="card-features">
+              <li>Historial de transacciones</li>
+              <li>Movimientos de inventario</li>
+              <li>Registro de arriendos y devoluciones</li>
+              <li>Ranking de herramientas mas rentadas</li>
+            </ul>
+          </button>
+        </div>
+
       </div>
-
-      {/* Why: The Modal is always present in the DOM but conditionally rendered (or hidden via CSS/null return) 
-          by the 'isOpen' prop. This keeps the parent layout clean and delegates the rendering logic to the child. */}
-      <RegisterUserModal 
-          isOpen={isRegisterModalOpen} 
-          onClose={() => setIsRegisterModalOpen(false)} 
-      />
-
-    </div>
+    </PageLayout>
   );
 };
 

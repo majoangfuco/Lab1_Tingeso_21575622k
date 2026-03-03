@@ -6,6 +6,8 @@ import SearchBar from '../components/SearchBar';
 import AddClientButton from '../components/AddClientButton';
 import ClientList from '../components/ClientList';
 import NewClientModal from '../components/NewClientModal';
+import PageLayout from '../components/PageLayout';
+import { tutorialContent } from '../tutorials/tutorialContent';
 
 const ClientsPage = () => {
   const [clients, setClients] = useState([]); 
@@ -50,11 +52,22 @@ const ClientsPage = () => {
       
       // Why: Granular Error Handling. We parse specific business logic errors sent by the backend 
       // (e.g., "RUT already exists") to give the user actionable feedback instead of a generic "Failed".
-      const serverMessage = error.response?.data?.error;
-      if (serverMessage) {
+      const serverMessage = error.response?.data?.error || error.response?.data?.message;
+      const status = error.response?.status;
+      
+      // Check if the error message contains "Ya existe un cliente"
+      if (serverMessage?.includes("Ya existe un cliente")) {
+        alert("⚠️ El RUT ingresado ya existe en el sistema. Por favor verifica el RUT e intenta nuevamente.");
+      } else if (status === 500) {
+        alert("❌ Error del servidor (500). Por favor revisa que todos los datos están completos y válidos. Si el problema persiste, contacta al administrador.");
+      } else if (serverMessage) {
         alert(`Error del Servidor: ${serverMessage}`);
-      } else if (error.response?.status === 403) {
+      } else if (status === 409) {
+        alert("⚠️ El RUT ingresado ya existe en el sistema. Por favor verifica el RUT e intenta nuevamente.");
+      } else if (status === 403) {
         alert("No tienes permisos para crear clientes.");
+      } else if (status === 400) {
+        alert("Error: Verifica que todos los campos requeridos estén completos y sean válidos.");
       } else {
         alert("Ocurrió un error inesperado al guardar.");
       }
@@ -77,45 +90,47 @@ const ClientsPage = () => {
   }, [searchTerm]);
 
   return (
-    <div className="clients-container">
-      <h1 className="page-title">Gestión de Clientes</h1>
+    <PageLayout tutorialData={tutorialContent.clientes}>
+      <div className="clients-container">
+        <h1 className="page-title">Clientes y Arriendos</h1>
 
-      <div className="actions-bar">
-        <SearchBar 
-          searchTerm={searchTerm} 
-          setSearchTerm={setSearchTerm} 
-        />
-        <AddClientButton 
-          onClick={() => setIsModalOpen(true)} 
+        <div className="actions-bar">
+          <SearchBar 
+            searchTerm={searchTerm} 
+            setSearchTerm={setSearchTerm} 
+          />
+          <AddClientButton 
+            onClick={() => setIsModalOpen(true)} 
+          />
+
+          <select 
+              value={statusFilter}
+              // Why: Inline onChange handler allows us to update the state AND trigger a fetch immediately,
+              // ensuring the list updates the moment the dropdown changes value.
+              onChange={(e) => {
+                  setStatusFilter(e.target.value);
+                  fetchClients(searchTerm, e.target.value); 
+              }}
+              className="border p-2 rounded"
+          >
+              <option value="">Todos los Estados</option>
+              <option value="true">Activos</option>
+              <option value="false">Bloqueados</option>
+          </select>
+        </div>
+
+        <ClientList 
+          clients={clients} 
+          isLoading={isLoading} 
         />
 
-        <select 
-            value={statusFilter}
-            // Why: Inline onChange handler allows us to update the state AND trigger a fetch immediately,
-            // ensuring the list updates the moment the dropdown changes value.
-            onChange={(e) => {
-                setStatusFilter(e.target.value);
-                fetchClients(searchTerm, e.target.value); 
-            }}
-            className="border p-2 rounded"
-        >
-            <option value="">Todos los Estados</option>
-            <option value="true">Activos</option>
-            <option value="false">Bloqueados</option>
-        </select>
+        <NewClientModal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+          onSave={handleSaveClient} 
+        />
       </div>
-
-      <ClientList 
-        clients={clients} 
-        isLoading={isLoading} 
-      />
-
-      <NewClientModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        onSave={handleSaveClient} 
-      />
-    </div>
+    </PageLayout>
   );
 };
 export default ClientsPage;

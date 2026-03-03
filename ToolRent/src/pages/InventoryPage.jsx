@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import InventoryService from '../services/InventoryService'; 
+import PageLayout from '../components/PageLayout';
+import { tutorialContent } from '../tutorials/tutorialContent';
 import './InventoryPage.css'; 
 
 
@@ -13,6 +16,16 @@ const CreateTypeModal = ({ isOpen, onClose, onSave, categories }) => {
     rentPrice: '',  
     duePrice: ''    
   });
+
+    useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [onClose]);
+
 
   // Why: Basic performance optimization. If the modal is hidden, we return null 
   // to avoid the browser calculating layout for invisible elements.
@@ -35,11 +48,24 @@ const CreateTypeModal = ({ isOpen, onClose, onSave, categories }) => {
   return (
     // Why: The 'onClick={onClose}' on the overlay allows the user to close the modal 
     // simply by clicking the dark background outside the box (standard UX pattern).
-    <div className="modal-overlay" onClick={onClose}>
+    <div
+      className="modal-overlay"
+      onClick={onClose}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === "Escape" || e.key === " ") {
+          onClose();
+        }
+      }}
+      tabIndex={0}
+    >
       
       {/* Why: 'e.stopPropagation()' is critical here. Without it, clicking inside the white box 
           would "bubble up" to the overlay and trigger the onClose function, accidentally closing the modal. */}
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+        onKeyDown={() => {}}
+      >
         <h2 style={{marginTop: 0, textAlign: 'center', color: '#C7372C'}}>Nuevo Tipo de Herramienta</h2>
         
         <form onSubmit={handleSubmit}>
@@ -66,8 +92,8 @@ const CreateTypeModal = ({ isOpen, onClose, onSave, categories }) => {
               {/* Why: The first option is disabled to force the user to make a conscious selection 
                   rather than defaulting to the first item in the list accidentally. */}
               <option value="" disabled>Seleccione una Categoría</option>
-              {categories.map((cat, index) => (
-                <option key={index} value={cat}>{cat}</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
               ))}
             </select>
           </div>
@@ -114,6 +140,13 @@ const CreateTypeModal = ({ isOpen, onClose, onSave, categories }) => {
       </div>
     </div>
   );
+};
+
+CreateTypeModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
 // --- MAIN COMPONENT: Inventory Page ---
@@ -204,68 +237,73 @@ const InventoryPage = () => {
   }, [searchTerm]);
 
   return (
-    <div className="inventory-container">
-      <h1 className="page-title">Inventario </h1>
+    <PageLayout tutorialData={tutorialContent.inventario}>
+      <div className="inventory-container">
+        <h1 className="page-title">Inventario </h1>
 
-      <div className="actions-bar">
-        <input 
-          type="text" 
-          placeholder="Buscar herramienta..." 
-          className="search-input"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button className="add-btn" onClick={() => setIsTypeModalOpen(true)}>
-          <span>+</span> Nuevo Tipo
-        </button>
-      </div>
-
-      {isLoading ? (
-        <div className="loading-text">Cargando catálogo...</div>
-      ) : (
-        <div className="table-container">
-          <table className="inventory-table">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Categoría</th>
-                <th>Precio de Repositorio</th>
-                <th>Precio de Renta Diaria</th>
-              </tr>
-            </thead>
-            <tbody>
-              {catalog.length > 0 ? (
-                catalog.map(item => (
-                  <tr key={item.idInformationTool}
-                      // Why: Making the row clickable improves UX on touch devices compared to small buttons.
-                      onClick={() => handleRowClick(item.idInformationTool)}
-                      className="table-row-hover"
-                  >
-                    <td><strong>{item.nameTool}</strong></td>
-                    <td>{item.categoryTool}</td>
-                    {/* Why: 'toLocaleString' formats raw numbers (2500) into currency format (2.500) for readability. */}
-                    <td className="price-tag">${item.repositionPrice?.toLocaleString()}</td>
-                    <td className="price-tag" style={{color:'#28a745'}}>${item.rentPrice?.toLocaleString()}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="4" className="loading-text">No se han encontrado herramientas.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+        <div className="actions-bar">
+          <input 
+            type="text" 
+            placeholder="Buscar herramienta..." 
+            className="search-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button className="add-btn" onClick={() => setIsTypeModalOpen(true)}>
+            <span>+</span> Nuevo Tipo
+          </button>
         </div>
-      )}
 
-      <CreateTypeModal 
-        isOpen={isTypeModalOpen} 
-        onClose={() => setIsTypeModalOpen(false)} 
-        onSave={handleSaveType}
-        categories={categories}
-      />
+        {isLoading ? (
+          <div className="loading-text">Cargando catálogo...</div>
+        ) : (
+          <div className="table-container">
+            <div style={{marginBottom: '15px', padding: '12px', backgroundColor: '#f3e5f5', borderRadius: '6px', border: '1px solid #ce93d8', color: '#4a148c', fontSize: '0.9rem'}}>
+              💡 <strong>Tip:</strong> Haz clic en cualquier herramienta para agregar nuevas unidades, editar su información, y cambiar los estados de las unidades disponibles.
+            </div>
+            <table className="inventory-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Precio de Repositorio</th>
+                  <th>Precio de Renta Diaria</th>
+                </tr>
+              </thead>
+              <tbody>
+                {catalog.length > 0 ? (
+                  catalog.map(item => (
+                    <tr key={item.idInformationTool}
+                        // Why: Making the row clickable improves UX on touch devices compared to small buttons.
+                        onClick={() => handleRowClick(item.idInformationTool)}
+                        className="table-row-hover"
+                    >
+                      <td><strong>{item.nameTool}</strong></td>
+                      <td>{item.categoryTool}</td>
+                      {/* Why: 'toLocaleString' formats raw numbers (2500) into currency format (2.500) for readability. */}
+                      <td className="price-tag">${item.repositionPrice?.toLocaleString()}</td>
+                      <td className="price-tag" style={{color:'#28a745'}}>${item.rentPrice?.toLocaleString()}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="loading-text">No se han encontrado herramientas.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-    </div>
+        <CreateTypeModal 
+          isOpen={isTypeModalOpen} 
+          onClose={() => setIsTypeModalOpen(false)} 
+          onSave={handleSaveType}
+          categories={categories}
+        />
+
+      </div>
+    </PageLayout>
   );
 };
 

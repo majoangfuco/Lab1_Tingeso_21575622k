@@ -1,4 +1,5 @@
 // src/components/PrivateRoute.jsx
+import PropTypes from 'prop-types';
 import { useKeycloak } from '@react-keycloak/web';
 import { Navigate } from 'react-router-dom';
 
@@ -37,6 +38,15 @@ const PrivateRoute = ({ children, roles }) => {
   // ENDPOINT REDIRECT: Fallback for unauthenticated users.
   // Why: We bounce them back to the public landing page (or login page) to protect the application state.
   return <Navigate to="/" />;
+};
+
+PrivateRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+  roles: PropTypes.arrayOf(PropTypes.string)
+};
+
+PrivateRoute.defaultProps = {
+  roles: null
 };
 
 export default PrivateRoute;

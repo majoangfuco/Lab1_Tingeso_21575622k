@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import apiClient from '../services/http-common';
+import PageLayout from '../components/PageLayout';
+import { tutorialContent } from '../tutorials/tutorialContent';
 import './InventoryPage.css'; 
 
 const ToolDetailPage = () => {
@@ -31,7 +33,8 @@ const ToolDetailPage = () => {
 
   // Unit Editing State (Inline Editing)
   const [editingUnitId, setEditingUnitId] = useState(null); 
-  const [tempStatus, setTempStatus] = useState(null);       
+  const [tempStatus, setTempStatus] = useState(null);
+  const [isEditingSaving, setIsEditingSaving] = useState(false);       
 
   // --- DATA FETCHING ---
   useEffect(() => {
@@ -88,6 +91,7 @@ const ToolDetailPage = () => {
 
   const handleSaveChanges = async () => {
     try {
+      setIsEditingSaving(true);
       // ENDPOINT TRIGGER: PUT request to update the general definition of the tool.
       const response = await apiClient.put('/toolrent/information-tool', editForm);
       setInfoTool(response.data); 
@@ -96,6 +100,8 @@ const ToolDetailPage = () => {
     } catch (error) {
       console.error("Error updating:", error);
       alert("Error al guardar los cambios. Verifica que tengas permisos de Administrador.");
+    } finally {
+      setIsEditingSaving(false);
     }
   };
 
@@ -113,6 +119,7 @@ const ToolDetailPage = () => {
 
   const saveUnitStatus = async (unitId) => {
     try {
+      setIsEditingSaving(true);
       // ENDPOINT TRIGGER: PUT request to update the status of a specific physical item.
       await apiClient.put(`/toolrent/tool/${unitId}`, { 
         toolId: unitId, 
@@ -138,6 +145,8 @@ const ToolDetailPage = () => {
         alert("Ocurrió un error al intentar actualizar el estado.");
       }
       cancelEditingUnit();
+    } finally {
+      setIsEditingSaving(false);
     }
   };
 
@@ -156,7 +165,7 @@ const ToolDetailPage = () => {
       alert("¡Unidad agregada!");
     } catch (error) {
       console.error(error);
-      alert("Error al agregar unidad.");
+      alert("Error al agregar unidad. Revisa que no hayas ingresado un código duplicado.");
     }
   };
 
@@ -190,11 +199,12 @@ const ToolDetailPage = () => {
   };
 
   return (
-    <div className="inventory-container">
+    <PageLayout tutorialData={tutorialContent.toolDetail}>
+      <div className="inventory-container">
       
       <div className="actions-bar" style={{ justifyContent: 'flex-start', gap: '20px' }}>
         <button className="btn-secondary" onClick={() => navigate('/inventario')}>
-          ← Volver al Inventario
+          ← Volver 
         </button>
         <h1 style={{ margin: 0 }}>
           {isEditing ? 'Editando Herramienta' : infoTool.nameTool}
@@ -214,7 +224,9 @@ const ToolDetailPage = () => {
           ) : (
             <div style={{display:'flex', gap:'10px'}}>
               <button onClick={cancelEditing} className="btn-cancel">Cancelar</button>
-              <button onClick={handleSaveChanges} className="btn-save">Guardar Cambios</button>
+              <button onClick={handleSaveChanges} className="btn-save" disabled={isEditingSaving}>
+                {isEditingSaving ? 'Cargando...' : 'Guardar Cambios'}
+              </button>
             </div>
           )}
         </div>
@@ -266,7 +278,7 @@ const ToolDetailPage = () => {
           <select 
             value={filterStatus} 
             onChange={(e) => setFilterStatus(e.target.value)}
-            style={{padding: '8px', borderRadius: '4px', border: '1px solid #ccc', marginLeft: '20px'}}
+            className="filter-select"
           >
             <option value="all">Todos los Estados</option>
             <option value="0">Disponibles</option>
@@ -326,11 +338,11 @@ const ToolDetailPage = () => {
                   <td style={{textAlign: 'center'}}>
                     {isRowEditing ? (
                       <div style={{display:'flex', justifyContent:'center', gap:'8px'}}>
-                        <button onClick={() => saveUnitStatus(unit.toolId)} style={{border:'none', background:'transparent', color:'green', cursor:'pointer', fontSize:'1.2rem'}}>✓</button>
-                        <button onClick={cancelEditingUnit} style={{border:'none', background:'transparent', color:'red', cursor:'pointer', fontSize:'1.2rem'}}>✕</button>
+                        <button onClick={() => saveUnitStatus(unit.toolId)} className="btn-table-save">✓</button>
+                        <button onClick={cancelEditingUnit} className="btn-table-cancel">✕</button>
                       </div>
                     ) : (
-                      <button onClick={() => startEditingUnit(unit)} style={{border:'none', background:'transparent', color:'#007bff', cursor:'pointer', fontSize:'1.2rem'}}>✎</button>
+                      <button onClick={() => startEditingUnit(unit)} className="btn-table-edit">✎</button>
                     )}
                   </td>
                 </tr>
@@ -348,9 +360,23 @@ const ToolDetailPage = () => {
 
       {/* Add Unit Modal */}
       {isUnitModalOpen && (
-        <div className="modal-overlay" onClick={() => setIsUnitModalOpen(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h2 style={{color:'#007bff', marginTop:0, textAlign:'center'}}>Agregar Unidad</h2>
+        <div 
+          className="modal-overlay" 
+          onClick={() => setIsUnitModalOpen(false)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              setIsUnitModalOpen(false);
+            }
+          }}
+        >
+          <dialog 
+            className="modal-content" 
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
+            open
+            aria-labelledby="add-unit-title"
+          >
+            <h2 id="add-unit-title" style={{color:'#007bff', marginTop:0, textAlign:'center'}}>Agregar Unidad</h2>
             <p style={{textAlign:'center', color:'#666'}}>
               Añadiendo a: <strong>{infoTool.nameTool}</strong>
             </p>
@@ -391,10 +417,11 @@ const ToolDetailPage = () => {
                 <button type="submit" className="btn-save">Guardar</button>
               </div>
             </form>
-          </div>
+          </dialog>
         </div>
       )}
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 

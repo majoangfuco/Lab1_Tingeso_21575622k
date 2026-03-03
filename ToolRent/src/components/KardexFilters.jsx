@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const KardexFilters = ({ onFilter, tools = [] }) => {
   // Why: We use local state to buffer user inputs. This prevents triggering a heavy database query 
@@ -89,6 +90,20 @@ const KardexFilters = ({ onFilter, tools = [] }) => {
       </div>
     </div>
   );
+};
+
+KardexFilters.propTypes = {
+  onFilter: PropTypes.func.isRequired,
+  tools: PropTypes.arrayOf(
+    PropTypes.shape({
+      idInformationTool: PropTypes.number.isRequired,
+      nameTool: PropTypes.string.isRequired,
+    })
+  ),
+};
+
+KardexFilters.defaultProps = {
+  tools: [],
 };
 
 export default KardexFilters;

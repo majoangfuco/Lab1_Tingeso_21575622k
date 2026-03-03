@@ -1,8 +1,8 @@
 /* --- Main Container (Same structure as RentalDetail) --- */
 .clients-container {
-  /* Why: Using 95% instead of a fixed pixel width ensures the layout is fluid 
-     and adapts to different screen sizes without creating horizontal scrollbars on smaller laptops. */
-  max-width: 95%;
+  /* Why: Using greater width ensures the layout fills more of the screen 
+     for better use of available horizontal space. */
+  max-width: 100%;
   margin: 30px auto;
   padding: 0 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -135,3 +135,4 @@
   font-style: italic;
   font-size: 1.1rem;
 }
+

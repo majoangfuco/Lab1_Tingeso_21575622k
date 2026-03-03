@@ -7,7 +7,7 @@ import keycloak from "./keycloak";
 const apiClient = axios.create({
   // ENDPOINT GATEWAY: Points to the central entry point (likely an API Gateway or Nginx Proxy)
   // that routes traffic to the specific microservices (Tool, Client, Rental) based on the path.
-  baseURL: "http://localhost/api", 
+  baseURL: "http://localhost:8090/api", 
   headers: {
     "Content-type": "application/json",
   },

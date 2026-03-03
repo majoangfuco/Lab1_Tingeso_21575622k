@@ -326,8 +326,29 @@ body {
   background-color: #a0251d;
 }</style></head>
   <body>
-    <div id="root"><div class="App"><nav class="navbar"><div class="navbar-left"><img alt="Logo" class="logo-avatar" src="./Vite + React_files/logoTR.png"><span class="navbar-brand">ToolRent</span></div><ul class="navbar-links"><li><a class="" href="http://localhost:5173/" data-discover="true">Home</a></li><li><a aria-current="page" class="active" href="http://localhost:5173/clientes" data-discover="true">Clientes</a></li><li><a class="" href="http://localhost:5173/inventario" data-discover="true">Inventario</a></li><li><a class="" href="http://localhost:5173/kardex" data-discover="true">Kardex</a></li></ul><div class="navbar-user"><span>mario</span><button class="logout-button">Cerrar Sesión</button></div></nav><div class="main-content"><div class="clients-container"><h1>Gestión de Clientes</h1><div class="actions-bar"><input placeholder="Buscar por RUT o Nombre..." class="search-input" type="text" value=""><button class="add-btn"><span>+</span> Registrar Nuevo Cliente</button></div><table class="clients-table"><thead><tr><th>Nombre Completo</th><th>RUT</th><th>Teléfono</th><th>Email</th></tr></thead><tbody><tr><td>Juan Pérez</td><td>12.345.678-9</td><td>+56 9 1234 5678</td><td>juan@gmail.com</td></tr><tr><td>María González</td><td>9.876.543-2</td><td>+56 9 8765 4321</td><td>maria@hotmail.com</td></tr></tbody></table></div></div></div></div>
+    <div id="root">
+      <div class="App">
+        <nav class="navbar">
+          <div class="navbar-left">
+            <img alt="Logo" class="logo-avatar" src="./Vite + React_files/logoTR.png">
+            <span class="navbar-brand">ToolRent</span>
+          </div>
+          <ul class="navbar-links">
+            <li><a class="" href="http://localhost:5173/" data-discover="true">Home</a></li>
+            <li><a aria-current="page" class="active" href="http://localhost:5173/clientes" data-discover="true">Clientes</a></li>
+            <li><a class="" href="http://localhost:5173/inventario" data-discover="true">Inventario</a></li>
+            <li><a class="" href="http://localhost:5173/kardex" data-discover="true">Kardex</a></li>
+          </ul>
+          
+          <div class="navbar-user">
+            <span>mario</span>
+            <button class="logout-button">Cerrar Sesión</button>
+          </div></nav><div class="main-content"><div class="clients-container"><h1>Gestión de Clientes</h1><div class="actions-bar"><input placeholder="Buscar por RUT o Nombre..." class="search-input" type="text" value=""><button class="add-btn"><span>+</span> Registrar Nuevo Cliente</button></div><table class="clients-table">
+            <caption>Lista de Clientes Registrados</caption>
+            <thead><tr><th>Nombre Completo</th><th>RUT</th><th>Teléfono</th><th>Email</th></tr></thead><tbody><tr><td>Juan Pérez</td><td>12.345.678-9</td><td>+56 9 1234 5678</td><td>juan@gmail.com</td></tr><tr><td>María González</td><td>9.876.543-2</td><td>+56 9 8765 4321</td><td>maria@hotmail.com</td></tr></tbody></table></div></div></div></div>
     <script type="module" src="./Vite + React_files/main.jsx"></script>
   
 
 <iframe src="./Vite + React_files/login-status-iframe.html" sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin" title="keycloak-session-iframe" style="display: none;"></iframe></body></html>
+
+

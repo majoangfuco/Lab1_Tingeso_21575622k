@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import UserService from '../services/UserService';
 import './RegisterUserModal.css'; 
 
@@ -110,6 +111,11 @@ const RegisterUserModal = ({ isOpen, onClose }) => {
             </div>
         </div>
     );
+};
+
+RegisterUserModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired
 };
 
 export default RegisterUserModal;

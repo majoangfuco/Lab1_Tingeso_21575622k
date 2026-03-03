@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import RentalService from '../services/RentalService';
 import './ReturnRentalModal.css';
 
@@ -25,7 +26,7 @@ const ReturnRentalModal = ({ isOpen, onClose, rentalId, tools, onSuccess }) => {
     const handleSubmit = async () => {
         // Why: This action (closing a rental) is usually irreversible in the database. 
         // A native browser confirmation acts as a "safety valve" against accidental clicks.
-        if (!window.confirm("¿Confirmar devolución y cerrar arriendo?")) return;
+        if (!window.confirm("Confirmar devolucion y cerrar arriendo?")) return;
 
         setLoading(true);
         try {
@@ -38,8 +39,11 @@ const ReturnRentalModal = ({ isOpen, onClose, rentalId, tools, onSuccess }) => {
 
             // ENDPOINT TRIGGER: The final handshake. We send the money info and the tool conditions 
             // to the server to calculate the final invoice and unlock the inventory.
-            await RentalService.returnRental(rentalId, payload);
-            alert("¡Arriendo devuelto exitosamente!");
+            const response = await RentalService.returnRental(rentalId, payload);
+            
+            // ALERT: Show the amount due from return
+            const amountDue = response?.data?.amountDue || response?.amountDue || payload.extraCharge;
+            alert("Arriendo devuelto exitosamente!\n\nMonto a cobrar por devolucion: $" + amountDue);
             
             // Why: Critical Step. The modal is a child component. Once it finishes, 
             // it MUST tell the parent ("ClientsPage" or "RentalsPage") to refresh the main list.
@@ -48,7 +52,7 @@ const ReturnRentalModal = ({ isOpen, onClose, rentalId, tools, onSuccess }) => {
             onClose();   
         } catch (error) {
             console.error(error);
-            alert("Hubo un error al procesar la devolución.");
+            alert("Hubo un error al procesar la devolucion.");
         } finally {
             setLoading(false);
         }
@@ -114,6 +118,21 @@ const ReturnRentalModal = ({ isOpen, onClose, rentalId, tools, onSuccess }) => {
             </div>
         </div>
     );
+};
+
+ReturnRentalModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  rentalId: PropTypes.number.isRequired,
+  tools: PropTypes.arrayOf(
+    PropTypes.shape({
+      toolId: PropTypes.number.isRequired,
+      informationTool: PropTypes.shape({
+        nameTool: PropTypes.string.isRequired
+      }).isRequired
+    })
+  ).isRequired,
+  onSuccess: PropTypes.func.isRequired
 };
 
 export default ReturnRentalModal;

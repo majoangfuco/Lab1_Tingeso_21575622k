@@ -1,0 +1,822 @@
+{
+  "id": "toolrent-automation-suite",
+  "version": "1.0",
+  "name": "ToolRent Automation Suite",
+  "url": "http://localhost:5173",
+  "tests": [
+    {
+      "id": "hu001-s1-create-rental",
+      "name": "HU001-S1: Crear Préstamo Exitoso (Happy Path)",
+      "commands": [
+        {
+          "command": "open",
+          "target": "http://localhost:5173/login",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//input[@type='email']",
+          "value": "3000"
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='email']",
+          "value": "empleado@test.com"
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='password']",
+          "value": "password123"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Ingresar')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h1[contains(text(),'Clientes')]",
+          "value": "5000"
+        },
+        {
+          "command": "click",
+          "target": "//tr[contains(.,'Juan Pérez')]//a",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h2[contains(text(),'Juan Pérez')]",
+          "value": "3000"
+        },
+        {
+          "command": "verifyText",
+          "target": "//span[contains(@class,'badge')]",
+          "value": "ACTIVO"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'+ Nuevo Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h2[contains(text(),'Nuevo Arriendo')]",
+          "value": "2000"
+        },
+        {
+          "command": "verifyText",
+          "target": "//p[contains(text(),'Cliente:')]",
+          "value": "Juan Pérez"
+        },
+        {
+          "command": "select",
+          "target": "//label[contains(text(),'Tipo de Herramienta')]/../select",
+          "value": "label=Taladro (Herramientas)"
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//label[contains(text(),'Unidad Disponible')]/../select//option[contains(text(),'TAD')]",
+          "value": "2000"
+        },
+        {
+          "command": "select",
+          "target": "//label[contains(text(),'Unidad Disponible')]/../select",
+          "value": "label=TAD-001 - Disponible"
+        },
+        {
+          "command": "click",
+          "target": "//label[contains(text(),'Fecha Inicio')]/../input",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "//label[contains(text(),'Fecha Inicio')]/../input",
+          "value": "2026-03-02T08:00"
+        },
+        {
+          "command": "click",
+          "target": "//label[contains(text(),'Fecha Término')]/../input",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "//label[contains(text(),'Fecha Término')]/../input",
+          "value": "2026-03-09T18:00"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'+ Agregar al Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//div[contains(@class,'cart')]//tr[contains(.,'TAD-001')]",
+          "value": "2000"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Confirmar Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForAlert",
+          "target": "",
+          "value": "3000"
+        },
+        {
+          "command": "assertAlert",
+          "target": "",
+          "value": "¡Arriendo creado!"
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h2[contains(text(),'Juan Pérez')]",
+          "value": "2000"
+        },
+        {
+          "command": "click",
+          "target": "//select[contains(@class,'filter-select')]",
+          "value": ""
+        },
+        {
+          "command": "select",
+          "target": "//select[contains(@class,'filter-select')]",
+          "value": "label=En Curso"
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//tr[contains(.,'Taladro')]//td[contains(.,'En Curso')]",
+          "value": "2000"
+        },
+        {
+          "command": "verifyElementPresent",
+          "target": "//tr[contains(.,'Taladro')]//td[contains(.,'En Curso')]",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "hu001-s2-client-blocked",
+      "name": "HU001-S2: Cliente Bloqueado - Botón Deshabilitado",
+      "commands": [
+        {
+          "command": "open",
+          "target": "http://localhost:5173/login",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='email']",
+          "value": "empleado@test.com"
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='password']",
+          "value": "password123"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Ingresar')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h1[contains(text(),'Clientes')]",
+          "value": "5000"
+        },
+        {
+          "command": "click",
+          "target": "//tr[contains(.,'Pedro García')]//a",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//span[contains(text(),'BLOQUEADO')]",
+          "value": "3000"
+        },
+        {
+          "command": "verifyAttribute",
+          "target": "//button[contains(text(),'+ Nuevo Arriendo')]@disabled",
+          "value": "disabled"
+        },
+        {
+          "command": "verifyAttribute",
+          "target": "//button[contains(text(),'+ Nuevo Arriendo')]@title",
+          "value": "Cliente bloqueado"
+        }
+      ]
+    },
+    {
+      "id": "hu003-s1-rental-limit-5",
+      "name": "HU003-S1: Bloqueo por Límite de 5 Préstamos Activos",
+      "commands": [
+        {
+          "command": "open",
+          "target": "http://localhost:5173/login",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='email']",
+          "value": "empleado@test.com"
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='password']",
+          "value": "password123"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Ingresar')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h1[contains(text(),'Clientes')]",
+          "value": "5000"
+        },
+        {
+          "command": "click",
+          "target": "//tr[contains(.,'Diego Torres')]//a",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//select[contains(@class,'filter-select')]",
+          "value": "3000"
+        },
+        {
+          "command": "select",
+          "target": "//select[contains(@class,'filter-select')]",
+          "value": "label=En Curso"
+        },
+        {
+          "command": "storeXpathCount",
+          "target": "//tr[contains(@class,'rental-row')]//td[contains(text(),'En Curso')]",
+          "value": "activeRentalsCount"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'+ Nuevo Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h2[contains(text(),'Nuevo Arriendo')]",
+          "value": "2000"
+        },
+        {
+          "command": "select",
+          "target": "//label[contains(text(),'Tipo de Herramienta')]/../select",
+          "value": "label=Sierra Circular (Herramientas)"
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//label[contains(text(),'Unidad Disponible')]/../select//option[contains(text(),'SIE')]",
+          "value": "2000"
+        },
+        {
+          "command": "select",
+          "target": "//label[contains(text(),'Unidad Disponible')]/../select",
+          "value": "label=SIE-001 - Disponible"
+        },
+        {
+          "command": "type",
+          "target": "//label[contains(text(),'Fecha Inicio')]/../input",
+          "value": "2026-03-02T08:00"
+        },
+        {
+          "command": "type",
+          "target": "//label[contains(text(),'Fecha Término')]/../input",
+          "value": "2026-03-09T18:00"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'+ Agregar al Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Confirmar Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForAlert",
+          "target": "",
+          "value": "3000"
+        },
+        {
+          "command": "assertAlert",
+          "target": "",
+          "value": "LIMITE ALCANZADO"
+        }
+      ]
+    },
+    {
+      "id": "hu002-s1-stock-zero",
+      "name": "HU002-S1: Validación de Stock Cero",
+      "commands": [
+        {
+          "command": "open",
+          "target": "http://localhost:5173/login",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='email']",
+          "value": "empleado@test.com"
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='password']",
+          "value": "password123"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Ingresar')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h1[contains(text(),'Clientes')]",
+          "value": "5000"
+        },
+        {
+          "command": "click",
+          "target": "//tr[contains(.,'Juan Pérez')]//a",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'+ Nuevo Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//label[contains(text(),'Tipo de Herramienta')]/../select",
+          "value": "2000"
+        },
+        {
+          "command": "select",
+          "target": "//label[contains(text(),'Tipo de Herramienta')]/../select",
+          "value": "label=Martillo (Herramientas Manuales)"
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//label[contains(text(),'Unidad Disponible')]/../select",
+          "value": "2000"
+        },
+        {
+          "command": "verifyText",
+          "target": "//label[contains(text(),'Unidad Disponible')]/../select",
+          "value": "Sin unidades disponibles"
+        },
+        {
+          "command": "verifyAttribute",
+          "target": "//button[contains(text(),'+ Agregar al Arriendo')]@disabled",
+          "value": "disabled"
+        }
+      ]
+    },
+    {
+      "id": "hu004-s1-return-rental",
+      "name": "HU004-S1: Devolución Exitosa de Préstamo",
+      "commands": [
+        {
+          "command": "open",
+          "target": "http://localhost:5173/login",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='email']",
+          "value": "empleado@test.com"
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='password']",
+          "value": "password123"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Ingresar')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h1[contains(text(),'Clientes')]",
+          "value": "5000"
+        },
+        {
+          "command": "click",
+          "target": "//tr[contains(.,'Ana Silva')]//a",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//select[contains(@class,'filter-select')]",
+          "value": "3000"
+        },
+        {
+          "command": "select",
+          "target": "//select[contains(@class,'filter-select')]",
+          "value": "label=En Curso"
+        },
+        {
+          "command": "click",
+          "target": "//tr[contains(@class,'rental-row')][1]//a",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//button[contains(text(),'Devolver Arriendo')]",
+          "value": "3000"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Devolver Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h2[contains(text(),'Devolver')]",
+          "value": "2000"
+        },
+        {
+          "command": "select",
+          "target": "//div[@class='tool-item-row'][1]//select[@class='status-select']",
+          "value": "label=✅ Buen Estado"
+        },
+        {
+          "command": "select",
+          "target": "//div[@class='tool-item-row'][2]//select[@class='status-select']",
+          "value": "label=🔧 A Mantención"
+        },
+        {
+          "command": "type",
+          "target": "//input[@class='input-money']",
+          "value": "0"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Confirmar Devolución')]",
+          "value": ""
+        },
+        {
+          "command": "waitForAlert",
+          "target": "",
+          "value": "3000"
+        },
+        {
+          "command": "assertAlert",
+          "target": "",
+          "value": "Arriendo devuelto exitosamente"
+        }
+      ]
+    },
+    {
+      "id": "hu004-s3-extra-charge",
+      "name": "HU004-S3: Devolución con Cargos Extra (Multa por Atraso)",
+      "commands": [
+        {
+          "command": "open",
+          "target": "http://localhost:5173/login",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='email']",
+          "value": "empleado@test.com"
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='password']",
+          "value": "password123"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Ingresar')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h1[contains(text(),'Clientes')]",
+          "value": "5000"
+        },
+        {
+          "command": "click",
+          "target": "//tr[contains(.,'Ana Silva')]//a",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "//tr[contains(@class,'rental-row')]//a",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//button[contains(text(),'Devolver Arriendo')]",
+          "value": "3000"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Devolver Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//input[@class='input-money']",
+          "value": "2000"
+        },
+        {
+          "command": "select",
+          "target": "//div[@class='tool-item-row'][1]//select[@class='status-select']",
+          "value": "label=✅ Buen Estado"
+        },
+        {
+          "command": "type",
+          "target": "//input[@class='input-money']",
+          "value": "5000"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Confirmar Devolución')]",
+          "value": ""
+        },
+        {
+          "command": "waitForAlert",
+          "target": "",
+          "value": "3000"
+        },
+        {
+          "command": "assertAlert",
+          "target": "",
+          "value": "Monto a cobrar por devolucion: $5000"
+        }
+      ]
+    },
+    {
+      "id": "hu006-s1-tool-states",
+      "name": "HU006-S1: Verificar Estados de Herramientas en Devolución",
+      "commands": [
+        {
+          "command": "open",
+          "target": "http://localhost:5173/login",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='email']",
+          "value": "empleado@test.com"
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='password']",
+          "value": "password123"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Ingresar')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h1[contains(text(),'Clientes')]",
+          "value": "5000"
+        },
+        {
+          "command": "click",
+          "target": "//a[contains(text(),'Ana Silva')]",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "//tr[contains(@class,'rental-row')]//a",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Devolver Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//select[@class='status-select']",
+          "value": "2000"
+        },
+        {
+          "command": "verifyElementPresent",
+          "target": "//option[contains(text(),'✅ Buen Estado')]",
+          "value": ""
+        },
+        {
+          "command": "verifyElementPresent",
+          "target": "//option[contains(text(),'🔧 A Mantención')]",
+          "value": ""
+        },
+        {
+          "command": "verifyElementPresent",
+          "target": "//option[contains(text(),'❌ Dañada')]",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "hu007-s3-quota-release",
+      "name": "HU007-S3: Liberación de Cupo tras Devolución",
+      "commands": [
+        {
+          "command": "open",
+          "target": "http://localhost:5173/login",
+          "value": ""
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='email']",
+          "value": "empleado@test.com"
+        },
+        {
+          "command": "type",
+          "target": "//input[@type='password']",
+          "value": "password123"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Ingresar')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h1[contains(text(),'Clientes')]",
+          "value": "5000"
+        },
+        {
+          "command": "click",
+          "target": "//tr[contains(.,'Diego Torres')]//a",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//select[contains(@class,'filter-select')]",
+          "value": "3000"
+        },
+        {
+          "command": "select",
+          "target": "//select[contains(@class,'filter-select')]",
+          "value": "label=En Curso"
+        },
+        {
+          "command": "storeXpathCount",
+          "target": "//tr[contains(@class,'rental-row')]",
+          "value": "initialCount"
+        },
+        {
+          "command": "click",
+          "target": "//tr[contains(@class,'rental-row')][1]//a",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Devolver Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//select[@class='status-select']",
+          "value": "2000"
+        },
+        {
+          "command": "select",
+          "target": "//select[@class='status-select']",
+          "value": "label=✅ Buen Estado"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Confirmar Devolución')]",
+          "value": ""
+        },
+        {
+          "command": "waitForAlert",
+          "target": "",
+          "value": "3000"
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h2[contains(text(),'Diego Torres')]",
+          "value": "2000"
+        },
+        {
+          "command": "select",
+          "target": "//select[contains(@class,'filter-select')]",
+          "value": "label=En Curso"
+        },
+        {
+          "command": "storeXpathCount",
+          "target": "//tr[contains(@class,'rental-row')]",
+          "value": "afterReturnCount"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'+ Nuevo Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//h2[contains(text(),'Nuevo Arriendo')]",
+          "value": "2000"
+        },
+        {
+          "command": "select",
+          "target": "//label[contains(text(),'Tipo de Herramienta')]/../select",
+          "value": "label=Taladro (Herramientas)"
+        },
+        {
+          "command": "waitForElementPresent",
+          "target": "//label[contains(text(),'Unidad Disponible')]/../select//option[contains(text(),'TAD')]",
+          "value": "2000"
+        },
+        {
+          "command": "select",
+          "target": "//label[contains(text(),'Unidad Disponible')]/../select",
+          "value": "label=TAD-001 - Disponible"
+        },
+        {
+          "command": "type",
+          "target": "//label[contains(text(),'Fecha Inicio')]/../input",
+          "value": "2026-03-02T08:00"
+        },
+        {
+          "command": "type",
+          "target": "//label[contains(text(),'Fecha Término')]/../input",
+          "value": "2026-03-09T18:00"
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'+ Agregar al Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "//button[contains(text(),'Confirmar Arriendo')]",
+          "value": ""
+        },
+        {
+          "command": "waitForAlert",
+          "target": "",
+          "value": "3000"
+        },
+        {
+          "command": "assertAlert",
+          "target": "",
+          "value": "¡Arriendo creado!"
+        }
+      ]
+    }
+  ],
+  "suites": [
+    {
+      "id": "hu001-tests",
+      "name": "HU001: Registro de Nuevo Préstamo",
+      "tests": ["hu001-s1-create-rental", "hu001-s2-client-blocked"]
+    },
+    {
+      "id": "hu002-tests",
+      "name": "HU002: Validación de Disponibilidad",
+      "tests": ["hu002-s1-stock-zero"]
+    },
+    {
+      "id": "hu003-tests",
+      "name": "HU003: Bloqueo de Préstamos",
+      "tests": ["hu003-s1-rental-limit-5"]
+    },
+    {
+      "id": "hu004-tests",
+      "name": "HU004: Devolución de Herramientas",
+      "tests": ["hu004-s1-return-rental", "hu004-s3-extra-charge"]
+    },
+    {
+      "id": "hu006-tests",
+      "name": "HU006: Estado de Herramientas",
+      "tests": ["hu006-s1-tool-states"]
+    },
+    {
+      "id": "hu007-tests",
+      "name": "HU007: Límite de Préstamos",
+      "tests": ["hu007-s3-quota-release"]
+    },
+    {
+      "id": "all-tests",
+      "name": "SUITE COMPLETA - Todos los Tests",
+      "tests": [
+        "hu001-s1-create-rental",
+        "hu001-s2-client-blocked",
+        "hu002-s1-stock-zero",
+        "hu003-s1-rental-limit-5",
+        "hu004-s1-return-rental",
+        "hu004-s3-extra-charge",
+        "hu006-s1-tool-states",
+        "hu007-s3-quota-release"
+      ]
+    }
+  ]
+}

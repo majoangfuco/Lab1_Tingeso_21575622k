@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { getKardexStatus, formatDate } from '../utils/KardexUtils';
 
 const KardexTable = ({ data }) => {
@@ -46,6 +47,20 @@ const KardexTable = ({ data }) => {
             </table>
         </div>
     );
+};
+
+KardexTable.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      kardexId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      kardexType: PropTypes.string.isRequired,
+      kardexDate: PropTypes.string.isRequired,
+      tool: PropTypes.shape({
+        nameTool: PropTypes.string.isRequired,
+      }).isRequired,
+      createdByUserId: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default KardexTable;
